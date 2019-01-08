@@ -1,4 +1,5 @@
 <?php
+
 namespace Rairlie\LockingSession;
 
 use Illuminate\Session\SessionManager as BaseSessionManager;
@@ -6,13 +7,12 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 
 class SessionManager extends BaseSessionManager
 {
-
     /**
-     * Override to return our own Store/Encrypted store
+     * Override to return our own Store/Encrypted store.
      */
     protected function buildSession($handler)
     {
-        if ($handler instanceOf NullSessionHandler) {
+        if ($handler instanceof NullSessionHandler) {
             return parent::buildSession($handler);
         }
 
@@ -32,5 +32,4 @@ class SessionManager extends BaseSessionManager
             );
         }
     }
-
 }

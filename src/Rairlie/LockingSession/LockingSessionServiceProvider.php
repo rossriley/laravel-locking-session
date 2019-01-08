@@ -1,13 +1,13 @@
 <?php
+
 namespace Rairlie\LockingSession;
 
 use Illuminate\Session\SessionServiceProvider;
 
 class LockingSessionServiceProvider extends SessionServiceProvider
 {
-
     /**
-     * Override so we return our own Middleware\StartSession
+     * Override so we return our own Middleware\StartSession.
      *
      * @return void
      */
@@ -23,7 +23,7 @@ class LockingSessionServiceProvider extends SessionServiceProvider
     }
 
     /**
-     * Override so we return our own SessionManager
+     * Override so we return our own SessionManager.
      *
      * @return void
      */
@@ -33,5 +33,4 @@ class LockingSessionServiceProvider extends SessionServiceProvider
             return new SessionManager($app);
         });
     }
-
 }
