@@ -4,6 +4,7 @@
  */
 namespace Rairlie\LockingSession;
 
+use RuntimeException;
 use Symfony\Component\Finder\Finder;
 use UnderflowException;
 use Log;
@@ -47,6 +48,7 @@ class Lock
     {
         if ($this->lockfp) {
             $this->log("acquire - existing lock");
+
             return;
         }
 
@@ -91,12 +93,12 @@ class Lock
 
     /**
      * Open the lock file on disk, creating it if it doesn't exist
+     * @throws RuntimeException
      */
     protected function openLockFile()
     {
-        if (!is_dir(dirname($this->lockfilePath))) {
-            // Suppress warning on mkdir - may be created by another process
-            @mkdir(dirname($this->lockfilePath), 0744, true);
+        if (!is_dir(dirname($this->lockfilePath)) && !mkdir($concurrentDirectory = dirname($this->lockfilePath), 0744, true) && !is_dir($concurrentDirectory)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
         }
         $this->lockfp = fopen($this->lockfilePath, 'w+');
     }
