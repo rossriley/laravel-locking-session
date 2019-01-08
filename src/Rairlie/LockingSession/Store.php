@@ -1,11 +1,11 @@
 <?php
+
 namespace Rairlie\LockingSession;
 
 use Illuminate\Session\Store as BaseStore;
 
 class Store extends BaseStore
 {
-
     public function __construct($name, $realHandler, $id = null, $lockfileDir = null)
     {
         $lockingSessionHandler = new LockingSessionHandler($realHandler, $lockfileDir);
@@ -17,5 +17,4 @@ class Store extends BaseStore
     {
         return $this->handler->needsRequest();
     }
-
 }

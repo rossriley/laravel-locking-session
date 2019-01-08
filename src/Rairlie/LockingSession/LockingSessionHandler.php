@@ -1,14 +1,13 @@
 <?php
+
 namespace Rairlie\LockingSession;
 
-use SessionHandlerInterface;
 use Illuminate\Session\CookieSessionHandler;
 use Illuminate\Session\ExistenceAwareInterface;
-use Rairlie\LockingSession\Lock;
+use SessionHandlerInterface;
 
 class LockingSessionHandler implements SessionHandlerInterface, ExistenceAwareInterface
 {
-
     protected $realHandler;
     protected $lock;
     protected $lockfileDir;
@@ -46,6 +45,7 @@ class LockingSessionHandler implements SessionHandlerInterface, ExistenceAwareIn
     {
         // Lock the session before reading and hold the lock
         $this->acquireLock($session_id);
+
         return $this->realHandler->read($session_id);
     }
 
@@ -54,6 +54,7 @@ class LockingSessionHandler implements SessionHandlerInterface, ExistenceAwareIn
         $this->acquireLock($session_id);
         $result = $this->realHandler->write($session_id, $session_data);
         $this->releaseLock();
+
         return $result;
     }
 
@@ -68,7 +69,7 @@ class LockingSessionHandler implements SessionHandlerInterface, ExistenceAwareIn
     }
 
     /**
-     * Route any other methods through to the real session realHandler (e.g. setRequest)
+     * Route any other methods through to the real session realHandler (e.g. setRequest).
      */
     public function __call($name, $arguments)
     {
@@ -92,7 +93,8 @@ class LockingSessionHandler implements SessionHandlerInterface, ExistenceAwareIn
     /**
      * Set the existence of the session on the handler if applicable.
      *
-     * @param  bool  $value
+     * @param bool $value
+     *
      * @return void
      */
     public function setExists($value)
@@ -101,5 +103,4 @@ class LockingSessionHandler implements SessionHandlerInterface, ExistenceAwareIn
             $this->realHandler->setExists($value);
         }
     }
-
 }
